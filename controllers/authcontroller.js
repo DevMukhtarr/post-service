@@ -8,7 +8,7 @@ export const signUp = async (req, res, next) =>{
     try{
         const { name,email,password} = req.body
         
-        if (!(name, email, password,)) {
+        if (!(name, email, password)) {
             return res.status(400).send("All inputs are required");
           }
 
