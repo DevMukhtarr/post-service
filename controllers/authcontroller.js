@@ -80,7 +80,7 @@ export const signIn = async (req, res) =>{
                 })
 
                 const clientIp = requestIp.getClientIp(req);
-                satelize.satelize({ip: clientIp},async (err, data) =>{
+                satelize.satelize({ip: clientIp}, (err, data) =>{
                     if(err){
                         return res.status(424).json({
                             status: false,
@@ -88,7 +88,7 @@ export const signIn = async (req, res) =>{
                         })
                     }
 
-                await User.findOneAndUpdate(email, {
+                User.findOneAndUpdate(email, {
                     continent: data.continent.en,
                     country: data.country.en,
                     country_code: data.country_code
