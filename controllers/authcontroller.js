@@ -2,9 +2,7 @@ import "dotenv/config";
 import User from "../models/user.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import axios from "axios"
-const axios_instance= axios.create();
-
+import satelize from "satelize";
 //get otp in signup page
 export const signUp = async (req, res, next) =>{
     try{
