@@ -1,6 +1,11 @@
 import User from "../models/user.js";
 import Post from "../models/post.js";
-import mongoose from "mongoose";
+import satelize from "satelize";
+import requestIp from "request-ip"
+
+const parseIp = (req) =>
+    req.headers['x-forwarded-for']?.split(',').shift()
+    || req.socket?.remoteAddress
 
 export const createPost = async (req, res) => {
     try {
@@ -103,3 +108,32 @@ export const getSinglePost = async (req, res) =>{
         })
     }
 }
+
+// export const saveLocation = async (req, res) =>{
+//     const { email } = req.body 
+//     const clientIp = requestIp.getClientIp(req);
+//     satelize.satelize({ip: clientIp}, async (err, data) =>{
+//         if(err){
+//             return res.status(424).json({
+//                 status: false,
+//                 message: "An error occurred" + err
+//             })
+//         }
+
+//         await User.findOneAndUpdate(email, {
+//             continent: data.continent.en,
+//             country: data.country.en,
+//             country_code: data.country_code
+//         })
+
+//         return res.status(200).json({
+//             status: true,
+//             message: "An error occurred",
+//             data: {
+//                 continent: data.continent.en,
+//                 country: data.country.en,
+//                 country_code: data.country_code
+//             }
+//         })
+//     })
+// }

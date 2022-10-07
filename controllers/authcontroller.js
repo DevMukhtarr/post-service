@@ -2,6 +2,8 @@ import "dotenv/config";
 import User from "../models/user.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import axios from "axios"
+const axios_instance= axios.create();
 
 //get otp in signup page
 export const signUp = async (req, res, next) =>{
@@ -74,13 +76,30 @@ export const signIn = async (req, res) =>{
                 {
                   expiresIn: "365d",
                 })
-                return res.status(200).json({
-                    status: true,
-                    message: "Login successfull",
-                    token: token
-                }) 
-        }    
-    } catch (err) {
+
+                const clientIp = requestIp.getClientIp(req);
+                satelize.satelize({ip: clientIp},async (err, data) =>{
+                    if(err){
+                        return res.status(424).json({
+                            status: false,
+                            message: "An error occurred" + err
+                        })
+                    }
+
+                await User.findOneAndUpdate(email, {
+                    continent: data.continent.en,
+                    country: data.country.en,
+                    country_code: data.country_code
+                })
+            })    
+            return res.status(200).json({
+                status: true,
+                message: "Login successfull",
+                token: token
+            }) 
+         }
+    } 
+catch (err) {
             return res.status(500).json({
                 status: false,
                 message: "An error occurred" + err
