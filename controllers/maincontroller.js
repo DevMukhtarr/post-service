@@ -1,7 +1,6 @@
 import User from "../models/user.js";
 import Post from "../models/post.js";
-import satelize from "satelize";
-import requestIp from "request-ip"
+import email_list from "../models/email_list.js";
 
 const parseIp = (req) =>
     req.headers['x-forwarded-for']?.split(',').shift()
@@ -109,31 +108,22 @@ export const getSinglePost = async (req, res) =>{
     }
 }
 
-// export const saveLocation = async (req, res) =>{
-//     const { email } = req.body 
-//     const clientIp = requestIp.getClientIp(req);
-//     satelize.satelize({ip: clientIp}, async (err, data) =>{
-//         if(err){
-//             return res.status(424).json({
-//                 status: false,
-//                 message: "An error occurred" + err
-//             })
-//         }
+export const joinEmailList = async (req, res) => {
+    try {
+        const user_email = await req.user.email
+        
+        await email_list.create({
+            email_address: user_email
+        })
 
-//         await User.findOneAndUpdate(email, {
-//             continent: data.continent.en,
-//             country: data.country.en,
-//             country_code: data.country_code
-//         })
-
-//         return res.status(200).json({
-//             status: true,
-//             message: "An error occurred",
-//             data: {
-//                 continent: data.continent.en,
-//                 country: data.country.en,
-//                 country_code: data.country_code
-//             }
-//         })
-//     })
-// }
+        return res.status(200).json({
+            status: true,
+            message: "Email address addedd"
+        })
+    } catch (error) {
+        return res.status(500).json({
+            status: false,
+            message: "An error occurred" + error
+        })
+    }
+} 
