@@ -112,9 +112,13 @@ export const joinEmailList = async (req, res) => {
     try {
         const user_email = await req.user.email
         
-        await email_list.create({
-            email_address: user_email
-        })
+        const user = await email_list.findOne({email_address: user_email})
+
+        if(user == null){
+            await email_list.create({
+                email_address: user_email
+            })
+        }
 
         return res.status(200).json({
             status: true,
