@@ -5,7 +5,9 @@ import {
     commentUnderPost,
     getPosts,
     getSinglePost,
-    joinEmailList
+    joinEmailList,
+    emailList,
+    allUsers
 } from "../controllers/maincontroller.js";
 import { verifyToken } from "../middlewares/auth.js";
 
@@ -17,6 +19,8 @@ router.route("/comment").post(verifyToken,commentUnderPost);
 router.route("/posts").get(verifyToken,getPosts);
 router.route("/single-post").get(verifyToken, getSinglePost);
 router.route("/join-email-list").post(verifyToken, joinEmailList);
+router.route("/email-list").get(verifyToken, emailList);
+router.route("/users").get(verifyToken, allUsers);
 
 export default router;
 

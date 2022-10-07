@@ -131,3 +131,46 @@ export const joinEmailList = async (req, res) => {
         })
     }
 } 
+
+export const emailList = async (req, res) =>{
+    try {
+        const email_addresses = await email_list.find();
+
+        return res.status(200).json({
+            status: true,
+            message: "all emails",
+            data: email_addresses
+        }) 
+    } catch (error) {
+        return res.status(500).json({
+            status: false,
+            message: "An error occurred"
+        })
+    }
+}
+
+export const allUsers = async (req, res) =>{
+    try {
+        let users_array  = []
+        const users = await User.find()
+        users.map((user) =>{
+            users_array.push({
+                name: user.name,
+                continent: user.continent,
+                country: user.country,
+                country_code: user.country_code
+            })
+        })
+
+        return res.status(200).json({
+            status: true,
+            message: "all emails",
+            data: users_array
+        }) 
+    } catch (error) {
+        return res.status(500).json({
+            status: false,
+            message: "An error occurred"
+        })
+    }
+}
