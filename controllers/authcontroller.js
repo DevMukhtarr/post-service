@@ -3,6 +3,8 @@ import User from "../models/user.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import satelize from "satelize";
+import requestIp from "request-ip"
+
 //get otp in signup page
 export const signUp = async (req, res, next) =>{
     try{
@@ -80,7 +82,7 @@ export const signIn = async (req, res) =>{
                 })
 
                 const clientIp = requestIp.getClientIp(req);
-                satelize.satelize({ip: clientIp}, (err, data) =>{
+                satelize.satelize({ip: clientIp}, async (err, data) =>{
                     if(err){
                         return res.status(424).json({
                             status: false,
@@ -88,7 +90,7 @@ export const signIn = async (req, res) =>{
                         })
                     }
 
-                User.findOneAndUpdate(email, {
+                await User.findOneAndUpdate(email, {
                     continent: data.continent.en,
                     country: data.country.en,
                     country_code: data.country_code
